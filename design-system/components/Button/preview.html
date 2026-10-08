@@ -1,0 +1,13 @@
+<!-- @dsCard group="Ações" height=64 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Button</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var T = window.Trafego, h = React.createElement;
+  var app = h('div',{className:'tp-row'},h(T.Button,{variant:'primary'},'Revisar alteração'),h(T.Button,null,'Exportar'),h(T.Button,{variant:'ghost'},'Cancelar'),h(T.Button,{variant:'danger'},'Pausar 3 anúncios'),h(T.Button,{variant:'primary',disabled:true},'Salvar'),h(T.Button,{size:'sm'},'Editar'));
+  ReactDOM.createRoot(document.getElementById('root')).render(app);
+</script>
+</body>
+</html>

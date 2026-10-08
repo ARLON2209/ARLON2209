@@ -1,0 +1,13 @@
+<!-- @dsCard group="Métricas" height=120 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>KpiCard</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var T = window.Trafego, h = React.createElement;
+  var app = h('div',{className:'tp-grid'},h(T.KpiCard,{label:'Investimento hoje',value:'R$ 2.418,30',delta:8.2}),h(T.KpiCard,{label:'Leads',value:'164',delta:12.4}),h(T.KpiCard,{label:'CPA médio',value:'R$ 14,75',delta:-6.1,goodWhen:'down'}),h(T.KpiCard,{label:'CTR',value:'1,92%',delta:-3.4}));
+  ReactDOM.createRoot(document.getElementById('root')).render(app);
+</script>
+</body>
+</html>

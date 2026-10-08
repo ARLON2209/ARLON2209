@@ -1,0 +1,61 @@
+<!-- @dsCard group="Telas" height=860 width=1280 page subtitle="Conta aberta: campanhas, edição de orçamento e confirmação" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Tela — Conta e edição</title>
+<style>
+  #root { padding: 0; }
+  .app { display: flex; min-height: 860px; }
+  .main { flex: 1; padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-6); min-width: 0; }
+  .main h1 { margin: 0; font-size: 32px; line-height: 38px; font-weight: 600; letter-spacing: -0.02em; }
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+  .split { display: flex; flex-direction: column; gap: var(--space-6); }
+  .side { display: grid; grid-template-columns: 380px 1fr; gap: var(--space-6); align-items: start; }
+  .tp-camp-name { white-space: nowrap; }
+  .chat { display: flex; flex-direction: column; gap: var(--space-3); }
+</style></head>
+<body>
+<div id="root"></div>
+<script>
+  var T = window.Trafego, h = React.createElement, brl = T.formatBRL;
+  var INICIAL = [
+    { id: '1', name: 'Leads — Implante', objective: 'Cadastros', status: 'ativa', budget: 80, spend: 64.2, results: 5 },
+    { id: '2', name: 'Remarketing 30d', objective: 'Mensagens', status: 'ativa', budget: 40, spend: 38.9, results: 3 },
+    { id: '3', name: 'Black Friday — Conversão', objective: 'Vendas', status: 'pausada', budget: 120, spend: 0, results: 0 },
+    { id: '4', name: 'Reels — Alcance', objective: 'Alcance', status: 'revisao', budget: 30, spend: 0, results: 0 }];
+  function Tela() {
+    var rows = React.useState(INICIAL), sel = React.useState(INICIAL[0]), pend = React.useState(null), log = React.useState([]);
+    function aplicar() {
+      var p = pend[0];
+      rows[1](rows[0].map(function (r) { return r.id === p.row.id ? Object.assign({}, r, p.patch, { edited: true }) : r; }));
+      log[1](log[0].concat(p.change.what + ' · ' + p.row.name + ': ' + p.change.from + ' → ' + p.change.to));
+      pend[1](null);
+    }
+    return h('div', { className: 'app' },
+      h(T.AppNav, { current: 'contas', items: [
+        { id: 'geral', label: 'Visão geral' }, { id: 'contas', label: 'Contas', count: 12 },
+        { id: 'campanhas', label: 'Campanhas', count: 38 }, { id: 'alertas', label: 'Alertas', count: 2 }, { id: 'assistente', label: 'Assistente' }] }),
+      h('main', { className: 'main' },
+        h('div', null, h('div', { className: 'tp-label' }, 'Contas › act_1029384756'),
+          h('div', { className: 'tp-row' }, h('h1', null, 'Clínica Sorriso'), h(T.StatusBadge, { status: 'ativa' }))),
+        h('div', { className: 'kpis' },
+          h(T.KpiCard, { label: 'Gasto hoje', value: 'R$ 212,40', delta: 4.1 }),
+          h(T.KpiCard, { label: 'Leads', value: '8', delta: 33.3 }),
+          h(T.KpiCard, { label: 'CPA', value: 'R$ 18,42', delta: -9.8, goodWhen: 'down' })),
+        h('div', { className: 'split' },
+          h(T.CampaignTable, { rows: rows[0],
+            onEditBudget: function (r) { sel[1](r); },
+            onToggle: function (r, v) { pend[1]({ row: r, patch: { status: v ? 'ativa' : 'pausada' }, change: { what: 'Status', where: r.name, from: v ? 'Pausada' : 'Ativa', to: v ? 'Ativa' : 'Pausada' } }); } }),
+          h('div', { className: 'side' },
+            pend[0]
+              ? h(T.ConfirmDialog, { title: 'Aplicar 1 alteração', changes: [pend[0].change], destructive: pend[0].patch.status === 'pausada',
+                  confirmLabel: pend[0].patch.status === 'pausada' ? 'Pausar agora' : 'Confirmar e aplicar', onConfirm: aplicar, onCancel: function () { pend[1](null); } })
+              : h(T.BudgetEditor, { key: sel[0].id, campaign: sel[0].name, current: sel[0].budget,
+                  onSave: function (n) { pend[1]({ row: sel[0], patch: { budget: n }, change: { what: 'Orçamento diário', where: sel[0].name, from: brl(sel[0].budget), to: brl(n) } }); } }),
+            log[0].length ? h('div', { className: 'tp-card chat' },
+              h('div', { className: 'tp-label' }, 'Histórico'),
+              log[0].map(function (l, i) { return h(T.ChatMessage, { key: i, tools: ['ads_update_entity'] }, l); })) : null))));
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(h(Tela));
+</script>
+</body>
+</html>

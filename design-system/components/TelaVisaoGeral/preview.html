@@ -1,0 +1,44 @@
+<!-- @dsCard group="Telas" height=760 width=1280 page subtitle="Visão geral de todas as contas, com o assistente embaixo" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Tela — Visão geral</title>
+<style>
+  #root { padding: 0; }
+  .app { display: flex; min-height: 760px; }
+  .main { flex: 1; padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-6); min-width: 0; }
+  .top { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--space-4); }
+  .top h1 { margin: 0; font-size: 32px; line-height: 38px; font-weight: 600; letter-spacing: -0.02em; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
+  .accs { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+  h2 { margin: 0 0 var(--space-3); font-size: 20px; line-height: 28px; font-weight: 600; }
+</style></head>
+<body>
+<div id="root"></div>
+<script>
+  var T = window.Trafego, h = React.createElement;
+  function Tela() {
+    var nav = React.useState('geral');
+    return h('div', { className: 'app' },
+      h(T.AppNav, { current: nav[0], onSelect: nav[1], items: [
+        { id: 'geral', label: 'Visão geral' }, { id: 'contas', label: 'Contas', count: 12 },
+        { id: 'campanhas', label: 'Campanhas', count: 38 }, { id: 'alertas', label: 'Alertas', count: 2 }, { id: 'assistente', label: 'Assistente' }] }),
+      h('main', { className: 'main' },
+        h('div', { className: 'top' },
+          h('div', null, h('div', { className: 'tp-label' }, 'Hoje · 08 out'), h('h1', null, 'Visão geral das contas')),
+          h('div', { className: 'tp-row' }, h(T.Button, null, 'Últimos 7 dias'), h(T.Button, { variant: 'primary' }, 'Novo relatório'))),
+        h('div', { className: 'kpis' },
+          h(T.KpiCard, { label: 'Investimento hoje', value: 'R$ 2.418,30', delta: 8.2 }),
+          h(T.KpiCard, { label: 'Leads', value: '164', delta: 12.4 }),
+          h(T.KpiCard, { label: 'CPA médio', value: 'R$ 14,75', delta: -6.1, goodWhen: 'down' }),
+          h(T.KpiCard, { label: 'Saldo total', value: 'R$ 9.204,10', delta: -18.3, compare: 'vs. semana' })),
+        h('section', null, h('h2', null, 'Contas de anúncio'),
+          h('div', { className: 'accs' },
+            h(T.AccountCard, { name: 'Clínica Sorriso', accountId: 'act_1029384756', balance: 1840.5, spendToday: 212.4, activeCampaigns: 4, result: 'R$ 18,42', onOpen: function () {} }),
+            h(T.AccountCard, { name: 'Loja Verde Moda', accountId: 'act_5566778899', status: 'alerta', alert: 'Saldo cobre ~2 dias no ritmo atual.', balance: 390, spendToday: 188.9, activeCampaigns: 6, resultLabel: 'ROAS', result: '3,4x', onOpen: function () {} }),
+            h(T.AccountCard, { name: 'Imobiliária Horizonte', accountId: 'act_4433221100', status: 'erro', alert: 'Pagamento recusado — veiculação parada.', balance: 0, spendToday: 0, activeCampaigns: 0, result: '—', onOpen: function () {} }))),
+        h(T.CommandBar, { suggestions: ['saldo de todas as contas', 'campanhas com CPA acima de R$ 30', 'pausar anúncios reprovados'] })));
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(h(Tela));
+</script>
+</body>
+</html>

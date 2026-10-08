@@ -1,0 +1,13 @@
+<!-- @dsCard group="Assistente" height=120 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>CommandBar</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var T = window.Trafego, h = React.createElement;
+  var app = h(T.CommandBar,{suggestions:['saldo de todas as contas','campanhas com CPA acima de R$ 30','pausar anúncios reprovados'],onSubmit:function(){}});
+  ReactDOM.createRoot(document.getElementById('root')).render(app);
+</script>
+</body>
+</html>

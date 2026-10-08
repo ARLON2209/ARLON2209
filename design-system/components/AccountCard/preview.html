@@ -1,0 +1,13 @@
+<!-- @dsCard group="Contas" height=250 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>AccountCard</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var T = window.Trafego, h = React.createElement;
+  var app = h('div',{className:'tp-grid',style:{gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))'}},h(T.AccountCard,{name:'Clínica Sorriso',accountId:'act_1029384756',balance:1840.5,spendToday:212.4,activeCampaigns:4,result:'R$ 18,42',onOpen:function(){}}),h(T.AccountCard,{name:'Loja Verde Moda',accountId:'act_5566778899',status:'alerta',alert:'Saldo cobre ~2 dias no ritmo atual.',balance:390,spendToday:188.9,activeCampaigns:6,resultLabel:'ROAS',result:'3,4x',onOpen:function(){}}),h(T.AccountCard,{name:'Imobiliária Horizonte',accountId:'act_4433221100',status:'erro',alert:'Pagamento recusado — veiculação parada.',balance:0,spendToday:0,activeCampaigns:0,result:'—',onOpen:function(){}}));
+  ReactDOM.createRoot(document.getElementById('root')).render(app);
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!-- @dsCard group="Contas" height=280 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>CampaignTable</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var T = window.Trafego, h = React.createElement;
+  function D(){var s=React.useState([{id:'1',name:'Leads — Implante',objective:'Cadastros',status:'ativa',budget:80,spend:64.2,results:5},{id:'2',name:'Remarketing 30d',objective:'Mensagens',status:'ativa',budget:40,spend:38.9,results:3,edited:true},{id:'3',name:'Black Friday — Conversão',objective:'Vendas',status:'pausada',budget:120,spend:0,results:0},{id:'4',name:'Reels — Alcance',objective:'Alcance',status:'revisao',budget:30,spend:0,results:0}]);return h(T.CampaignTable,{rows:s[0],onToggle:function(r,v){s[1](s[0].map(function(x){return x.id===r.id?Object.assign({},x,{status:v?'ativa':'pausada',edited:true}):x}))}})}
+  var app = h(D);
+  ReactDOM.createRoot(document.getElementById('root')).render(app);
+</script>
+</body>
+</html>

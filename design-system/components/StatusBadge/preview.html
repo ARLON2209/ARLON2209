@@ -1,0 +1,13 @@
+<!-- @dsCard group="Status" height=56 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>StatusBadge</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var T = window.Trafego, h = React.createElement;
+  var app = h('div',{className:'tp-row'},h(T.StatusBadge,{status:'ativa'}),h(T.StatusBadge,{status:'pausada'}),h(T.StatusBadge,{status:'revisao'}),h(T.StatusBadge,{status:'alerta'}),h(T.StatusBadge,{status:'erro'}),h(T.StatusBadge,{status:'erro'},'Reprovado'));
+  ReactDOM.createRoot(document.getElementById('root')).render(app);
+</script>
+</body>
+</html>

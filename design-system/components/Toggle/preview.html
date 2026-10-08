@@ -1,0 +1,14 @@
+<!-- @dsCard group="Ações" height=56 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Toggle</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var T = window.Trafego, h = React.createElement;
+  function D(){var s=React.useState(true);return h('div',{className:'tp-row'},h(T.Toggle,{checked:s[0],label:'Campanha',onChange:s[1]}),h('span',{className:'tp-muted'},s[0]?'Ativa':'Pausada'),h(T.Toggle,{checked:false,label:'Off'}),h(T.Toggle,{checked:true,disabled:true,label:'Em análise'}))}
+  var app = h(D);
+  ReactDOM.createRoot(document.getElementById('root')).render(app);
+</script>
+</body>
+</html>

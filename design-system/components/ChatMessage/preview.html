@@ -1,0 +1,13 @@
+<!-- @dsCard group="Assistente" height=220 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>ChatMessage</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var T = window.Trafego, h = React.createElement;
+  var app = h('div',{className:'tp-stack'},h(T.ChatMessage,{role:'user'},'qual conta está com saldo baixo?'),h(T.ChatMessage,{role:'assistant',tools:['ads_get_ad_accounts · 12 contas','get_all_accounts_balance']},h('p',null,'Duas contas cobrem menos de 3 dias:'),h('div',{className:'tp-row'},h(T.StatusBadge,{status:'alerta'},'Loja Verde Moda · ~2 dias'),h(T.StatusBadge,{status:'erro'},'Imobiliária Horizonte · parada'))));
+  ReactDOM.createRoot(document.getElementById('root')).render(app);
+</script>
+</body>
+</html>

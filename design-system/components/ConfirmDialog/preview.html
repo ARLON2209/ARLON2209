@@ -1,0 +1,13 @@
+<!-- @dsCard group="Edição" height=340 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>ConfirmDialog</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var T = window.Trafego, h = React.createElement;
+  var app = h(T.ConfirmDialog,{title:'Aplicar 2 alterações',changes:[{what:'Orçamento diário',where:'Leads — Implante',from:'R$ 80,00',to:'R$ 96,00'},{what:'Status',where:'Black Friday — Conversão',from:'Pausada',to:'Ativa'}],note:'A campanha Black Friday volta a gastar a partir de agora.',onConfirm:function(){},onCancel:function(){}});
+  ReactDOM.createRoot(document.getElementById('root')).render(app);
+</script>
+</body>
+</html>

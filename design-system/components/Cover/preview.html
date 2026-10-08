@@ -1,0 +1,42 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Capa</title>
+<style>
+  #root { padding: 0; }
+  .cover { position: relative; width: 960px; height: 288px; background: var(--bg-000); overflow: hidden; }
+  .art { position: absolute; left: 480px; top: 0; }
+  .accent { fill: var(--accent); }
+  .ink { fill: var(--ink); }
+  .info { fill: var(--info); }
+  .warn { fill: var(--warn); }
+  .dot { fill: var(--accent); }
+  .bar { rx: var(--radius-md); }
+  .text { position: absolute; left: 32px; bottom: 32px; max-width: 440px; }
+  .name { margin: 0; font-family: var(--font-sans); font-weight: 700; font-size: 80px; line-height: .95; letter-spacing: -0.03em; color: var(--ink); }
+  .tag { margin: 12px 0 0; font-size: 14px; line-height: 20px; color: var(--ink-muted); font-family: var(--font-mono); }
+</style></head>
+<body>
+<div id="root">
+<div class="cover">
+  <!--
+    blocks: accent 152x256, ink 96x176, info 64x136, warn 72x120 — bars rising from the bottom edge, ~26% of the cover.
+    arrangement: unequal bars bleeding off the bottom, tallest (accent) at the right, read as a performance chart.
+    pattern: dot grid (precise, technical, mono — "nasceu da tela preta do terminal"), 6x6 accent dots at space-4 pitch.
+    scales: widths/gaps on space-4 multiples (16px), bar corners radius-md, dots r=2 at space-4 pitch.
+  -->
+  <svg class="art" width="480" height="288" viewBox="0 0 480 288" aria-hidden="true">
+    <circle class="dot" cx="24" cy="24" r="2"/><circle class="dot" cx="24" cy="40" r="2"/><circle class="dot" cx="24" cy="56" r="2"/><circle class="dot" cx="24" cy="72" r="2"/><circle class="dot" cx="24" cy="88" r="2"/><circle class="dot" cx="24" cy="104" r="2"/><circle class="dot" cx="40" cy="24" r="2"/><circle class="dot" cx="40" cy="40" r="2"/><circle class="dot" cx="40" cy="56" r="2"/><circle class="dot" cx="40" cy="72" r="2"/><circle class="dot" cx="40" cy="88" r="2"/><circle class="dot" cx="40" cy="104" r="2"/><circle class="dot" cx="56" cy="24" r="2"/><circle class="dot" cx="56" cy="40" r="2"/><circle class="dot" cx="56" cy="56" r="2"/><circle class="dot" cx="56" cy="72" r="2"/><circle class="dot" cx="56" cy="88" r="2"/><circle class="dot" cx="56" cy="104" r="2"/><circle class="dot" cx="72" cy="24" r="2"/><circle class="dot" cx="72" cy="40" r="2"/><circle class="dot" cx="72" cy="56" r="2"/><circle class="dot" cx="72" cy="72" r="2"/><circle class="dot" cx="72" cy="88" r="2"/><circle class="dot" cx="72" cy="104" r="2"/><circle class="dot" cx="88" cy="24" r="2"/><circle class="dot" cx="88" cy="40" r="2"/><circle class="dot" cx="88" cy="56" r="2"/><circle class="dot" cx="88" cy="72" r="2"/><circle class="dot" cx="88" cy="88" r="2"/><circle class="dot" cx="88" cy="104" r="2"/><circle class="dot" cx="104" cy="24" r="2"/><circle class="dot" cx="104" cy="40" r="2"/><circle class="dot" cx="104" cy="56" r="2"/><circle class="dot" cx="104" cy="72" r="2"/><circle class="dot" cx="104" cy="88" r="2"/><circle class="dot" cx="104" cy="104" r="2"/>
+    <rect class="bar warn" x="24" y="168" width="72" height="136"/>
+    <rect class="bar ink" x="112" y="112" width="96" height="192"/>
+    <rect class="bar info" x="224" y="152" width="64" height="152"/>
+    <rect class="bar accent" x="304" y="32" width="152" height="272"/>
+  </svg>
+  <div class="text">
+    <h1 class="name">Painel de<br>Tráfego</h1>
+    <p class="tag">› suas contas do Meta, em tela.</p>
+  </div>
+</div>
+</div>
+</body>
+</html>
