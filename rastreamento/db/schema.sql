@@ -76,3 +76,37 @@ CREATE TABLE IF NOT EXISTS wa_clicks (
   user_agent    TEXT
 );
 CREATE INDEX IF NOT EXISTS wa_clicks_client_ts ON wa_clicks (client_id, ts DESC);
+
+-- ===================== Semana 2: mini-CRM =====================
+
+-- Chave de acesso do CRM por cliente (guardamos só o hash SHA-256).
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS crm_key_hash TEXT UNIQUE;
+
+-- Um lead por telefone por cliente. A origem vem do código (clique rastreado) ou é informada pelo atendente.
+CREATE TABLE IF NOT EXISTS leads (
+  id             BIGSERIAL PRIMARY KEY,
+  client_id      INT NOT NULL REFERENCES clients(id) ON DELETE CASCADE,
+  phone          TEXT NOT NULL,                 -- só dígitos, com DDI
+  name           TEXT,
+  click_id       BIGINT REFERENCES wa_clicks(id) ON DELETE SET NULL,
+  origin         TEXT NOT NULL DEFAULT 'desconhecida', -- google | meta | organico | indicacao | outro | desconhecida
+  origin_source  TEXT NOT NULL DEFAULT 'manual',       -- codigo | manual
+  campaign       TEXT,                          -- utm_campaign do clique ou texto do atendente
+  stage          TEXT NOT NULL DEFAULT 'conversa',     -- conversa | orcamento | venda | perdido
+  value          NUMERIC(12,2),                 -- valor da venda
+  notes          TEXT,
+  created_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (client_id, phone)
+);
+CREATE INDEX IF NOT EXISTS leads_client_created ON leads (client_id, created_at DESC);
+
+-- Histórico de etapas: base para enviar Lead/Venda ao Meta e ao Google (Semana 3).
+CREATE TABLE IF NOT EXISTS lead_events (
+  id         BIGSERIAL PRIMARY KEY,
+  lead_id    BIGINT NOT NULL REFERENCES leads(id) ON DELETE CASCADE,
+  stage      TEXT NOT NULL,
+  value      NUMERIC(12,2),
+  ts         TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS lead_events_lead ON lead_events (lead_id, ts);

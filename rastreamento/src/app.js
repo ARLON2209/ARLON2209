@@ -1,8 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { randomInt, timingSafeEqual } from 'node:crypto';
 import Fastify from 'fastify';
+import { crmRoutes, hashKey, newCrmKey } from './crm.js';
 
 const TRACKER_JS = readFileSync(new URL('../public/t.js', import.meta.url), 'utf8');
+const CRM_HTML = readFileSync(new URL('../public/crm.html', import.meta.url), 'utf8');
 
 const EVENT_NAMES = new Set(['PageView', 'ViewContent', 'Contact', 'Lead', 'Schedule', 'Purchase']);
 const ORIGIN_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
@@ -56,6 +58,16 @@ export function buildApp({ pool, adminToken = process.env.ADMIN_TOKEN, logger = 
     reply.header('Cache-Control', 'public, max-age=300');
     return TRACKER_JS;
   });
+
+  // ---- Semana 2: mini-CRM ----
+  app.get('/crm', async (req, reply) => {
+    reply.header('Content-Type', 'text/html; charset=utf-8');
+    reply.header('Cache-Control', 'no-cache');
+    reply.header('X-Frame-Options', 'DENY');
+    reply.header('Referrer-Policy', 'no-referrer');
+    return CRM_HTML;
+  });
+  app.register(crmRoutes, { prefix: '/api/crm', pool });
 
   // ---- Coleta de eventos do site ----
   app.post('/collect', async (req, reply) => {
@@ -189,6 +201,15 @@ export function buildApp({ pool, adminToken = process.env.ADMIN_TOKEN, logger = 
         [c.rows[0].id, slug, str(b.name), channel, str(b.message, 1000)],
       );
       return reply.code(201).send(rows[0]);
+    });
+
+    // Gera (ou troca) a chave de acesso do CRM do cliente. A chave só aparece nesta resposta.
+    admin.post('/clients/:slug/crm-key', async (req, reply) => {
+      const key = newCrmKey();
+      const { rows } = await pool.query(
+        'UPDATE clients SET crm_key_hash = $2 WHERE slug = $1 RETURNING slug', [req.params.slug, hashKey(key)]);
+      if (!rows.length) return reply.code(404).send({ error: 'cliente desconhecido' });
+      return { client: rows[0].slug, crm_key: key, aviso: 'Guarde agora: a chave não é exibida de novo.' };
     });
 
     // Últimos cliques para o WhatsApp de um cliente.

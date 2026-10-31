@@ -10,7 +10,7 @@ Anúncio (UTM + gclid/fbclid)
    → botão de WhatsApp passa por  track.SEUDOMINIO/w/<link>
    → o clique é gravado com a origem e ganha um código curto (ex.: K7P2M)
    → WhatsApp abre com a mensagem:  "Olá! Quero um orçamento.  (cód. K7P2M)"
-   → [Semana 2] a conversa é ligada ao clique pelo código
+   → [Semana 2] o atendente cola a mensagem no mini-CRM: a conversa é ligada ao clique pelo código
    → [Semana 3] Lead / Venda volta para Meta (CAPI) e Google (conversão offline)
    → [Semana 4] painel: custo por conversa, por orçamento e por venda
 ```
@@ -20,7 +20,7 @@ Anúncio (UTM + gclid/fbclid)
 | Semana | Entrega | Status |
 |---|---|---|
 | 1 | Coletor + banco, script do site, links de rastreio de WhatsApp com código, UTMs padronizadas | **Pronto (código)**. Falta publicar |
-| 2 | Ligar conversa ao clique: mini-CRM (conversa → orçamento → venda) e leitura do código | A fazer |
+| 2 | Mini-CRM: conversa ligada ao clique pelo código, etapas conversa → orçamento → venda, resumo por origem | **Pronto (código)** |
 | 3 | Meta Conversions API e Google Ads (conversões offline por gclid), com deduplicação | A fazer |
 | 4 | Tela no painel de tráfego (gasto × conversas × vendas), LGPD e alertas | A fazer |
 
@@ -91,6 +91,31 @@ curl -H "authorization: Bearer $TOKEN" "$API/admin/clicks/K7P2M"
 
 ---
 
+## Semana 2: mini-CRM (opção A)
+
+Tela para o atendente do cliente registrar cada conversa e acompanhar até a venda: `https://track.SEUDOMINIO.com.br/crm` (feita para usar no celular).
+
+### Liberar o acesso de um cliente
+```bash
+curl -X POST $API/admin/clients/butzke/crm-key -H "authorization: Bearer $TOKEN"
+```
+A resposta traz a `crm_key`. **Ela aparece só nessa hora** (o banco guarda apenas o hash). Envie para o responsável da Butzke por um canal privado. Para trocar a chave (por exemplo, quando um funcionário sai), rode o mesmo comando: a chave antiga deixa de funcionar.
+
+### Rotina do atendente
+1. Chegou conversa nova no WhatsApp → abre o CRM → **+ Novo lead**.
+2. **Cola a 1ª mensagem** do cliente. Se tiver `(cód. XXXXX)`, o CRM mostra na hora a origem (Google, campanha, palavra-chave).
+3. Sem código (por exemplo, anúncio de clique para WhatsApp do Meta, que mostra "Vi seu anúncio" na conversa), o atendente escolhe **De onde veio?** e, se souber, o anúncio.
+4. Informa telefone e nome → **Salvar**.
+5. Conforme a negociação anda: **→ Orçamento**, **→ Venda** (pede o valor) ou **→ Perdido**.
+
+Regras:
+- Um lead por telefone. Se o mesmo número chegar de novo, os dados são atualizados (não duplica).
+- Origem vinda do código é **rastreada** e não pode ser trocada à mão. Um código novo sempre substitui uma origem informada manualmente.
+- Cada mudança de etapa fica registrada em `lead_events`, que é a base do envio de Lead e Venda ao Meta e ao Google na Semana 3.
+- No topo da tela fica o resumo dos últimos 30 dias por origem: leads, vendas e receita.
+
+---
+
 ## Endpoints
 
 | Método | Caminho | Uso |
@@ -102,6 +127,9 @@ curl -H "authorization: Bearer $TOKEN" "$API/admin/clicks/K7P2M"
 | POST | `/admin/links` | Cadastra/atualiza link de rastreio |
 | GET | `/admin/clicks?client=` | Últimos cliques para o WhatsApp |
 | GET | `/admin/clicks/:code` | Origem de um código visto na conversa |
+| POST | `/admin/clients/:slug/crm-key` | Gera/troca a chave do mini-CRM do cliente |
+| GET | `/crm` | Tela do mini-CRM |
+| GET/POST/PATCH | `/api/crm/...` | API do mini-CRM (cabeçalho `x-crm-key`): `me`, `code/:code`, `leads`, `leads/:id`, `summary` |
 | GET | `/health` | Verificação de saúde |
 
 ## Desenvolvimento

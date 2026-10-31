@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Leads WhatsApp</title>
+<style>
+:root {
+  --bg-000:#0b0d10; --bg-100:#14171c; --bg-200:#1c2027; --line:#2a2f38; --ink:#e8eaed; --ink-muted:#9aa3ae;
+  --accent:#3ddc84; --accent-ink:#04210f; --info:#6cb4ff; --warn:#f5b83d; --danger:#ff7a7a;
+  --google:#6cb4ff; --meta:#b59cff; --organico:#3ddc84; --indicacao:#f5b83d; --outro:#9aa3ae;
+  --font: Inter, system-ui, -apple-system, "Segoe UI", sans-serif; --mono: ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
+  --bg-000:#f5f6f8; --bg-100:#ffffff; --bg-200:#eceef2; --line:#dde1e6; --ink:#14171c; --ink-muted:#5a6370;
+  --accent:#0b7a3f; --accent-ink:#ffffff; --info:#1d5fb8; --warn:#8a5a00; --danger:#c0292b;
+  --google:#1d5fb8; --meta:#6a42c9; --organico:#0b7a3f; --indicacao:#8a5a00; --outro:#5a6370; color-scheme: light; } }
+:root[data-theme="light"] {
+  --bg-000:#f5f6f8; --bg-100:#ffffff; --bg-200:#eceef2; --line:#dde1e6; --ink:#14171c; --ink-muted:#5a6370;
+  --accent:#0b7a3f; --accent-ink:#ffffff; --info:#1d5fb8; --warn:#8a5a00; --danger:#c0292b;
+  --google:#1d5fb8; --meta:#6a42c9; --organico:#0b7a3f; --indicacao:#8a5a00; --outro:#5a6370; color-scheme: light; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg-000); color:var(--ink); font:15px/1.45 var(--font); }
+button, input, select, textarea { font: inherit; color: inherit; }
+.wrap { max-width: 760px; margin: 0 auto; padding: 16px 16px 96px; }
+header { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:16px; }
+h1 { font-size:20px; margin:0; }
+.muted { color: var(--ink-muted); }
+.small { font-size: 13px; }
+.card { background:var(--bg-100); border:1px solid var(--line); border-radius:12px; padding:14px; }
+.btn { border:1px solid var(--line); background:var(--bg-200); border-radius:8px; padding:8px 14px; cursor:pointer; font-weight:500; }
+.btn:hover { border-color: var(--ink-muted); }
+.btn-primary { background:var(--accent); color:var(--accent-ink); border-color:transparent; }
+.btn-sm { padding:5px 10px; font-size:13px; }
+.btn-ghost { background:transparent; }
+input, select, textarea { width:100%; background:var(--bg-000); border:1px solid var(--line); border-radius:8px; padding:10px; }
+textarea { resize: vertical; min-height: 64px; }
+label { display:block; font-size:13px; color:var(--ink-muted); margin:10px 0 4px; }
+*:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+@media (max-width: 480px) { .grid2 { grid-template-columns:1fr; } }
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:12px; }
+.stat { background:var(--bg-100); border:1px solid var(--line); border-radius:10px; padding:10px; cursor:pointer; text-align:left; }
+.stat[aria-pressed="true"] { border-color: var(--accent); }
+.stat b { display:block; font:600 20px/1.2 var(--mono); }
+.stat span { font-size:12px; color:var(--ink-muted); }
+.origins { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+.chip { display:inline-flex; align-items:center; gap:6px; font-size:12px; border:1px solid var(--line); border-radius:999px; padding:2px 10px; background:var(--bg-100); }
+.dot { width:8px; height:8px; border-radius:50%; background:var(--outro); flex:none; }
+.o-google .dot { background:var(--google); } .o-meta .dot { background:var(--meta); } .o-organico .dot { background:var(--organico); }
+.o-indicacao .dot { background:var(--indicacao); }
+.toolbar { display:flex; gap:8px; margin-bottom:12px; }
+.list { display:flex; flex-direction:column; gap:10px; }
+.lead-top { display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
+.lead-name { font-weight:600; }
+.phone { font-family:var(--mono); font-size:13px; color:var(--ink-muted); }
+.meta-row { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+.stage { font-size:12px; font-weight:600; padding:2px 8px; border-radius:6px; background:var(--bg-200); white-space:nowrap; }
+.s-orcamento { color:var(--info); } .s-venda { color:var(--accent); } .s-perdido { color:var(--danger); }
+.actions { display:flex; flex-wrap:wrap; gap:6px; }
+.inline { display:flex; gap:6px; margin-top:8px; }
+.inline input { flex:1; }
+.preview { margin-top:8px; padding:10px; border-radius:8px; background:var(--bg-200); font-size:14px; }
+.err { color: var(--danger); font-size: 13px; min-height: 18px; margin-top: 6px; }
+.fab { position:fixed; right:16px; bottom:calc(16px + env(safe-area-inset-bottom, 0px)); box-shadow:0 8px 24px rgba(0,0,0,.35); padding:12px 18px; border-radius:999px; }
+.empty { text-align:center; padding:32px 12px; }
+.hidden { display:none !important; }
+dialog { border:1px solid var(--line); border-radius:14px; background:var(--bg-100); color:var(--ink); width:min(560px, calc(100vw - 32px)); padding:18px; }
+dialog::backdrop { background: rgba(0,0,0,.55); }
+.dlg-head { display:flex; justify-content:space-between; align-items:center; }
+.dlg-foot { display:flex; justify-content:flex-end; gap:8px; margin-top:14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Login -->
+  <section id="login" class="card hidden" style="max-width:420px;margin:12vh auto 0">
+    <h1>Leads WhatsApp</h1>
+    <p class="muted small">Entre com a chave de acesso que a agência enviou.</p>
+    <form id="loginForm">
+      <label for="key">Chave de acesso</label>
+      <input id="key" type="password" autocomplete="current-password" required>
+      <div class="err" id="loginErr"></div>
+      <button class="btn btn-primary" style="width:100%;margin-top:6px">Entrar</button>
+    </form>
+  </section>
+
+  <!-- App -->
+  <section id="app" class="hidden">
+    <header>
+      <div>
+        <h1 id="clientName">Leads</h1>
+        <div class="muted small">Origens: últimos 30 dias</div>
+      </div>
+      <button class="btn btn-sm btn-ghost" id="logout">Sair</button>
+    </header>
+
+    <div class="stats" id="stats"></div>
+    <div class="origins" id="origins"></div>
+
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="Buscar por nome ou telefone">
+    </div>
+    <div class="list" id="list"></div>
+  </section>
+</div>
+
+<button class="btn btn-primary fab hidden" id="newBtn">+ Novo lead</button>
+
+<dialog id="dlg">
+  <form id="leadForm">
+    <div class="dlg-head"><strong>Novo lead</strong><button type="button" class="btn btn-sm btn-ghost" id="dlgClose">Fechar</button></div>
+    <label for="f-msg">Cole a 1ª mensagem do cliente (ou só o código)</label>
+    <textarea id="f-msg" placeholder="Olá! Quero um orçamento. (cód. K7P2M)"></textarea>
+    <div id="codePreview" class="preview hidden"></div>
+    <div id="manualOrigin">
+      <div class="grid2">
+        <div>
+          <label for="f-origin">De onde veio?</label>
+          <select id="f-origin">
+            <option value="meta">Anúncio Meta (Instagram/Facebook)</option>
+            <option value="google">Google</option>
+            <option value="organico">Orgânico (perfil, Google Meu Negócio)</option>
+            <option value="indicacao">Indicação</option>
+            <option value="outro">Outro</option>
+            <option value="desconhecida" selected>Não sei</option>
+          </select>
+        </div>
+        <div>
+          <label for="f-campaign">Campanha / anúncio (opcional)</label>
+          <input id="f-campaign" placeholder="ex.: vídeo janela antirruído">
+        </div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div><label for="f-phone">Telefone (com DDD)</label><input id="f-phone" inputmode="tel" required placeholder="47 99999-0000"></div>
+      <div><label for="f-name">Nome</label><input id="f-name" autocomplete="off"></div>
+    </div>
+    <div class="err" id="formErr"></div>
+    <div class="dlg-foot"><button class="btn btn-primary">Salvar lead</button></div>
+  </form>
+</dialog>
+
+<script>
+(function () {
+  var ORDER = ['conversa', 'orcamento', 'venda', 'perdido'];
+  var STAGE_LABEL = { conversa: 'Conversa', orcamento: 'Orçamento', venda: 'Venda', perdido: 'Perdido' };
+  var ORIGIN_LABEL = { google: 'Google', meta: 'Meta', organico: 'Orgânico', indicacao: 'Indicação', outro: 'Outro', desconhecida: 'Não sei' };
+  var key = null, leads = [], filter = null, codeInfo = null;
+  try { key = localStorage.getItem('crm_key'); } catch (e) {}
+
+  var $ = function (id) { return document.getElementById(id); };
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  function brl(v) { return Number(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+  function fmtPhone(p) { var m = String(p).match(/^55(\d{2})(\d{4,5})(\d{4})$/); return m ? '(' + m[1] + ') ' + m[2] + '-' + m[3] : '+' + p; }
+  function fmtDate(s) { return new Date(s).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }); }
+  function extractCode(s) {
+    s = String(s || '').trim().toUpperCase();
+    var m = s.match(/C[ÓO]D\.?\s*:?\s*([A-Z0-9]{5})\b/) || s.match(/^([A-Z0-9]{5})$/);
+    return m ? m[1] : null;
+  }
+
+  function api(method, path, body) {
+    return fetch('/api/crm' + path, {
+      method: method, headers: { 'x-crm-key': key || '', 'content-type': 'application/json' },
+      body: body ? JSON.stringify(body) : undefined
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (data) {
+        if (r.status === 401) { logout(); throw new Error(data.error || 'Sessão expirada'); }
+        if (!r.ok) throw new Error(data.error || 'Erro ' + r.status);
+        return data;
+      });
+    });
+  }
+
+  function show(id) { ['login', 'app'].forEach(function (s) { $(s).classList.toggle('hidden', s !== id); }); $('newBtn').classList.toggle('hidden', id !== 'app'); }
+  function logout() { key = null; try { localStorage.removeItem('crm_key'); } catch (e) {} show('login'); }
+
+  function start() {
+    api('GET', '/me').then(function (me) {
+      $('clientName').textContent = me.name;
+      document.title = 'Leads · ' + me.name;
+      show('app');
+      refresh();
+    }).catch(function (e) { $('loginErr').textContent = e.message; show('login'); });
+  }
+
+  function refresh() {
+    var q = $('search').value.trim();
+    return Promise.all([api('GET', '/leads' + (q ? '?q=' + encodeURIComponent(q) : '')), api('GET', '/summary')])
+      .then(function (r) { leads = r[0]; renderStats(); renderOrigins(r[1]); renderList(); })
+      .catch(function (e) { alert(e.message); });
+  }
+
+  function renderStats() {
+    var box = $('stats'); box.textContent = '';
+    ['conversa', 'orcamento', 'venda', 'perdido'].forEach(function (s) {
+      var n = leads.filter(function (l) { return l.stage === s; }).length;
+      var b = el('button', 'stat'); b.type = 'button';
+      b.setAttribute('aria-pressed', String(filter === s));
+      b.appendChild(el('b', null, String(n)));
+      b.appendChild(el('span', null, STAGE_LABEL[s]));
+      b.onclick = function () { filter = filter === s ? null : s; renderStats(); renderList(); };
+      box.appendChild(b);
+    });
+  }
+
+  function renderOrigins(rows) {
+    var box = $('origins'); box.textContent = '';
+    rows.forEach(function (r) {
+      var c = el('span', 'chip o-' + r.origin); c.appendChild(el('span', 'dot'));
+      var txt = ORIGIN_LABEL[r.origin] + ': ' + r.leads + (r.leads === 1 ? ' lead · ' : ' leads · ') + r.vendas + (r.vendas === 1 ? ' venda' : ' vendas');
+      if (r.receita > 0) txt += ' · ' + brl(r.receita);
+      c.appendChild(document.createTextNode(txt));
+      box.appendChild(c);
+    });
+  }
+
+  function renderList() {
+    var box = $('list'); box.textContent = '';
+    var rows = filter ? leads.filter(function (l) { return l.stage === filter; }) : leads;
+    if (!rows.length) {
+      var e = el('div', 'card empty muted', filter ? 'Nenhum lead nesta etapa.' : 'Nenhum lead ainda. Toque em “+ Novo lead” quando chegar uma conversa.');
+      box.appendChild(e); return;
+    }
+    rows.forEach(function (l) { box.appendChild(card(l)); });
+  }
+
+  function card(l) {
+    var c = el('div', 'card');
+    var top = el('div', 'lead-top');
+    var who = el('div');
+    who.appendChild(el('div', 'lead-name', l.name || 'Sem nome'));
+    var wa = el('a', 'phone', fmtPhone(l.phone)); wa.href = 'https://wa.me/' + l.phone; wa.target = '_blank'; wa.rel = 'noopener';
+    who.appendChild(wa);
+    top.appendChild(who);
+    top.appendChild(el('span', 'stage s-' + l.stage, STAGE_LABEL[l.stage] + (l.stage === 'venda' && l.value != null ? ' · ' + brl(l.value) : '')));
+    c.appendChild(top);
+
+    var meta = el('div', 'meta-row');
+    var o = el('span', 'chip o-' + l.origin); o.appendChild(el('span', 'dot'));
+    o.appendChild(document.createTextNode(ORIGIN_LABEL[l.origin] + (l.origin_source === 'codigo' ? ' · rastreado' : '')));
+    meta.appendChild(o);
+    if (l.campaign) meta.appendChild(el('span', 'chip', l.campaign));
+    if (l.utm_term) meta.appendChild(el('span', 'chip', 'palavra: ' + l.utm_term));
+    meta.appendChild(el('span', 'chip muted', fmtDate(l.created_at)));
+    c.appendChild(meta);
+
+    var actions = el('div', 'actions');
+    var next = { conversa: ['orcamento', 'venda', 'perdido'], orcamento: ['venda', 'perdido', 'conversa'], venda: ['orcamento'], perdido: ['conversa'] }[l.stage];
+    next.forEach(function (s) {
+      var back = ORDER.indexOf(s) < ORDER.indexOf(l.stage) && s !== 'perdido';
+      var b = el('button', 'btn btn-sm' + (s === 'venda' ? ' btn-primary' : ''), (back ? '↺ ' : '→ ') + STAGE_LABEL[s]);
+      b.type = 'button';
+      b.onclick = function () { s === 'venda' ? askValue(c, l) : move(l, { stage: s }); };
+      actions.appendChild(b);
+    });
+    c.appendChild(actions);
+    return c;
+  }
+
+  function askValue(c, l) {
+    if (c.querySelector('.inline')) return;
+    var f = el('form', 'inline');
+    var i = el('input'); i.inputMode = 'decimal'; i.placeholder = 'Valor da venda (R$)'; i.required = true;
+    var b = el('button', 'btn btn-sm btn-primary', 'Confirmar venda');
+    f.appendChild(i); f.appendChild(b);
+    f.onsubmit = function (ev) { ev.preventDefault(); move(l, { stage: 'venda', value: i.value }); };
+    c.appendChild(f); i.focus();
+  }
+
+  function move(l, body) { api('PATCH', '/leads/' + l.id, body).then(refresh).catch(function (e) { alert(e.message); }); }
+
+  // Formulário de novo lead
+  var lookupTimer;
+  $('f-msg').addEventListener('input', function () {
+    clearTimeout(lookupTimer);
+    var code = extractCode(this.value);
+    codeInfo = null;
+    var pv = $('codePreview');
+    if (!code) { pv.classList.add('hidden'); $('manualOrigin').classList.remove('hidden'); return; }
+    lookupTimer = setTimeout(function () {
+      api('GET', '/code/' + code).then(function (info) {
+        codeInfo = info;
+        pv.textContent = '';
+        pv.appendChild(el('strong', null, '✓ Código ' + info.code + ': ' + ORIGIN_LABEL[info.origin]));
+        var parts = [info.link, info.utm_campaign && 'campanha ' + info.utm_campaign, info.utm_term && 'palavra “' + info.utm_term + '”', 'clicou em ' + fmtDate(info.ts)].filter(Boolean);
+        pv.appendChild(el('div', 'muted small', parts.join(' · ')));
+        pv.classList.remove('hidden');
+        $('manualOrigin').classList.add('hidden');
+      }).catch(function () {
+        pv.textContent = 'Código ' + code + ' não encontrado. Informe a origem abaixo.';
+        pv.classList.remove('hidden');
+        $('manualOrigin').classList.remove('hidden');
+      });
+    }, 250);
+  });
+
+  $('leadForm').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    $('formErr').textContent = '';
+    var body = { phone: $('f-phone').value, name: $('f-name').value };
+    if (codeInfo) body.code = codeInfo.code;
+    else { body.origin = $('f-origin').value; body.campaign = $('f-campaign').value; }
+    api('POST', '/leads', body).then(function (lead) {
+      $('dlg').close(); $('leadForm').reset(); codeInfo = null;
+      $('codePreview').classList.add('hidden'); $('manualOrigin').classList.remove('hidden');
+      if (!lead.created) alert('Este telefone já estava cadastrado. Os dados foram atualizados.');
+      refresh();
+    }).catch(function (e) { $('formErr').textContent = e.message; });
+  });
+
+  $('newBtn').onclick = function () { $('dlg').showModal(); $('f-msg').focus(); };
+  $('dlgClose').onclick = function () { $('dlg').close(); };
+  $('logout').onclick = logout;
+  var searchTimer;
+  $('search').addEventListener('input', function () { clearTimeout(searchTimer); searchTimer = setTimeout(refresh, 300); });
+  $('loginForm').addEventListener('submit', function (ev) {
+    ev.preventDefault(); key = $('key').value.trim(); $('loginErr').textContent = '';
+    try { localStorage.setItem('crm_key', key); } catch (e) {}
+    start();
+  });
+
+  if (key) start(); else show('login');
+})();
+</script>
+</body>
+</html>
